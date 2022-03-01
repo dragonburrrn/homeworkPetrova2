@@ -6,7 +6,7 @@ from telebot import types
 bot = telebot.TeleBot('5204365820:AAFvuyokcKcxoDygSTsQ4I60SkiHMPNK8QU')  # Создаем экземпляр бота @Ivanov_Ivan_1MD19_bot
 
 # -----------------------------------------------------------------------
-# Функция, обрабатывающая команду /start
+# Функция, обрабатывающая команду /start1
 @bot.message_handler(commands=["start"])
 def start(message, res=False):
     chat_id = message.chat.id
