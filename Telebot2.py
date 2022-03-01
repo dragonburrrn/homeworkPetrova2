@@ -10,7 +10,6 @@ bot = telebot.TeleBot('5204365820:AAFvuyokcKcxoDygSTsQ4I60SkiHMPNK8QU')  # Со�
 @bot.message_handler(commands=["start"])
 def start(message, res=False):
     chat_id = message.chat.id
-
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn1 = types.KeyboardButton ("Главное меню")
     btn2 = types.KeyboardButton ("Помощь")
