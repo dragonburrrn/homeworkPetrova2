@@ -2,11 +2,14 @@
 
 import telebot  # pyTelegramBotAPI	4.3.1
 from telebot import types
+import requests
+import bs4
+from random import randint
 
 bot = telebot.TeleBot('5204365820:AAFvuyokcKcxoDygSTsQ4I60SkiHMPNK8QU')  # Создаем экземпляр бота @Ivanov_Ivan_1MD19_bot
 
 # -----------------------------------------------------------------------
-# Функция, обрабатывающая команду /start1
+# Функция, обрабатывающая команду /start
 @bot.message_handler(commands=["start"])
 def start(message, res=False):
     chat_id = message.chat.id
@@ -35,14 +38,22 @@ def get_text_messages(message):
         markup.add(btn1, btn2, btn3,back)
         bot.send_message(chat_id, text="Вы на главном меню", reply_markup=markup)
     elif ms_text == "Развлечения":
+
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn1 = types.KeyboardButton("Прислать собаку")
+        btn1 = types.KeyboardButton("Прислать собачку")
         btn2 = types.KeyboardButton("Прислать анекдот")
         back = types.KeyboardButton("Вернуться в главное меню")
         markup.add(btn1, btn2, back)
         bot.send_message(chat_id, text="Развлечения", reply_markup=markup)
-    elif ms_text == "/dog" or ms_text == "Прислать собаку":
-        bot.send_message(chat_id, text="еще не готово...")
+
+    elif ms_text == "Собачка" or ms_text == "Прислать собачку":
+
+        contens = requests.get('https://random.dog/woof.json').json()
+        urlDogs = contens['url']
+        bot.send_photo(chat_id, photo=urlDogs, caption="Собачка")
+
+    elif ms_text == "Прислать анекдот":
+        bot.send_message(chat_id, text=get_anekdot())
     elif ms_text == "WEB-камера":
         bot.send_message(chat_id, text="еще не готово...")
     elif ms_text == "Управление":
@@ -57,7 +68,17 @@ def get_text_messages(message):
     else:
         bot.send_message(chat_id, text="Я тебя слышу!!! Ваше сообщение: " + ms_text)
 
+# ----------------------------------------------------------------------------
+def get_anekdot():
+    array_anekdots = []
+    req_anek = requests.get("https://nekdo.ru/random/")
+    soup = bs4.BeautifulSoup(req_anek.text, "html.parser")
+    result_find = soup.select(".text")
+    for result in result_find:
+        array_anekdots.append(result.getText().strip())
+    return array_anekdots[0]
 # -----------------------------------------------------------------------
+
 bot.polling(none_stop=True, interval=0) # Запускаем бота
 
 print()
