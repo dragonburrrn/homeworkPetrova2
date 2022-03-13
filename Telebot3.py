@@ -89,8 +89,6 @@ def get_anekdot():
 # чистим текст статьи в wikipedia и ограничиваем его тысячей символов
 def getwiki(s):
 
-    print('fff')
-
     try:
         ny = wikipedia.page(s)
         wikitext = ny.content[:1000]
